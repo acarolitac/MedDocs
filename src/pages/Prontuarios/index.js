@@ -1,35 +1,33 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import * as Animatable from 'react-native-animatable'; // Biblioteca de animação
+import React from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
+import * as Animatable from 'react-native-animatable'; //biblioteca de animação
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Biblioteca de ícones
+import { Ionicons } from '@expo/vector-icons'; //biblioteca de icons
+import { useState } from 'react';
 
-export default function Home() {
+export default function Prontuarios() {
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      {/* Cabeçalho */}
+      {/*cabeçalho*/}
       <View style={styles.headerWrapper}>
-        <Animatable.View animation="fadeInLeft" delay={200} style={styles.containerHeader}>
-          <Text style={styles.message}>Olá, nomeDeUsuario!</Text>
-          <Text style={styles.subtexto}>O que você precisa hoje?</Text>
-        </Animatable.View>
+        {/*<Animatable.View animation="fadeInLeft" delay={200} style={styles.containerHeader}>*/}
+          <Text style={styles.message}>Prontuários</Text>
+          <Text style={styles.subtexto}>Aqui estão os prontuários dos seus pacientes!</Text>
+          {/*</Animatable.View>*/}
       </View>
 
-      {/* Corpo da tela */}
+      {/*corpo da tela*/}
       <View animation="fadeInLeft" delay={200} style={styles.containerHome}>
-        {/* Seção de próximos atendimentos */}
+        {/*seção lista de prontuários*/}
         <View style={styles.section}>
           <View style={styles.header}>
-            <Text style={styles.headerText}>Próximos atendimentos</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Agendamento')}>
-              <Text style={styles.headerLink}>Ver tudo</Text>
-            </TouchableOpacity>
+            
           </View>
 
-          {/* Cartão principal */}
-          <TouchableOpacity style={styles.mainCard} onPress={() => navigation.navigate('Agendamento')}>
+          {/*cartão principal*/}
+          <TouchableOpacity style={styles.mainCard} onPress={() => navigation.navigate('')}>
             <Image
               source={{ uri: 'https://via.placeholder.com/50' }} // Coloque aqui a URL da imagem do paciente
               style={styles.patientImage}
@@ -40,19 +38,9 @@ export default function Home() {
             </View>
           </TouchableOpacity>
         </View>
-
-        {/* Seção de prontuários cadastrados */}
-        <View style={styles.section}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Prontuários Cadastrados</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Prontuarios')}>
-              <Text style={styles.headerLink}>Ver tudo</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </View>
 
-      {/* Menu inferior */}
+      {/*menu inferior */}
       <View style={styles.bottomMenu}>
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}>
           <Ionicons name="home-outline" size={28} color="#fff" />
@@ -68,7 +56,7 @@ export default function Home() {
           <TouchableOpacity style={styles.centralIcon} onPress={() => navigation.navigate('FormProntuario')}>
             <View style={styles.circle}>
               <Ionicons name="add" size={36} color="#fff" />
-            </View>
+            </View>            
           </TouchableOpacity>
         </View>
 
@@ -99,7 +87,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#3D3A72',
   },
   containerHeader: {
-    alignItems: 'flex-start', // Corrigido de 'left' para 'flex-start'
+    alignItems: 'left',
+    paddingTop: 15,
   },
   message: {
     paddingTop: 20,
@@ -136,7 +125,7 @@ const styles = StyleSheet.create({
     color: '#4A4A4A',
   },
   headerLink: {
-    color: '#6762BC',
+    color: '#3F3F3F',
     fontSize: 14,
     marginTop: 14,
   },

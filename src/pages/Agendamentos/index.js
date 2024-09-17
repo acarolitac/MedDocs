@@ -1,55 +1,45 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import * as Animatable from 'react-native-animatable'; // Biblioteca de animação
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Biblioteca de ícones
+import { Ionicons } from '@expo/vector-icons';
+import { Agenda } from 'react-native-calendars'; // importa o calendário da biblioteca react-native-calendars 
 
-export default function Home() {
+export default function Agendamento() {
   const navigation = useNavigation();
+
+  //exemplo de dados para o calendário
+  const items = {
+    '2024-09-03': [{ name: 'Consulta com nomePaciente', height: 80 }],
+    '2024-09-10': [{ name: 'Receitar novos remédios nomePaciente', height: 80 }],
+  };
 
   return (
     <View style={styles.container}>
       {/* Cabeçalho */}
       <View style={styles.headerWrapper}>
-        <Animatable.View animation="fadeInLeft" delay={200} style={styles.containerHeader}>
-          <Text style={styles.message}>Olá, nomeDeUsuario!</Text>
-          <Text style={styles.subtexto}>O que você precisa hoje?</Text>
-        </Animatable.View>
+        <Text style={styles.message}>Agendamentos</Text>
+        <Text style={styles.subtexto}>Confira todos os seus compromissos.</Text>
       </View>
 
       {/* Corpo da tela */}
-      <View animation="fadeInLeft" delay={200} style={styles.containerHome}>
-        {/* Seção de próximos atendimentos */}
-        <View style={styles.section}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Próximos atendimentos</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Agendamento')}>
-              <Text style={styles.headerLink}>Ver tudo</Text>
+      <View style={styles.containerHome}>
+        <Agenda
+          items={items}
+          renderItem={(item) => (
+            <TouchableOpacity
+              style={styles.mainCard}
+              onPress={() => navigation.navigate('Agendamento')}
+            >
+              <Text style={styles.agendamentoText}>{item.name}</Text>
             </TouchableOpacity>
-          </View>
-
-          {/* Cartão principal */}
-          <TouchableOpacity style={styles.mainCard} onPress={() => navigation.navigate('Agendamento')}>
-            <Image
-              source={{ uri: 'https://via.placeholder.com/50' }} // Coloque aqui a URL da imagem do paciente
-              style={styles.patientImage}
-            />
-            <View style={styles.cardText}>
-              <Text style={styles.patientName}>NomePaciente</Text>
-              <Text style={styles.patientDetail}>Lorem ipsum</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Seção de prontuários cadastrados */}
-        <View style={styles.section}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Prontuários Cadastrados</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Prontuarios')}>
-              <Text style={styles.headerLink}>Ver tudo</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+          )}
+          theme={{
+            agendaDayTextColor: '#3D3A72',
+            agendaDayNumColor: '#3D3A72',
+            agendaTodayColor: '#6762BC',
+            agendaKnobColor: '#3D3A72',
+          }}
+        />
       </View>
 
       {/* Menu inferior */}
@@ -64,13 +54,13 @@ export default function Home() {
           <Text style={styles.menuText}>Prontuário</Text>
         </TouchableOpacity>
 
-        <View style={styles.centralIconWrapper}>
+        {/*{<View style={styles.centralIconWrapper}>
           <TouchableOpacity style={styles.centralIcon} onPress={() => navigation.navigate('FormProntuario')}>
             <View style={styles.circle}>
               <Ionicons name="add" size={36} color="#fff" />
             </View>
           </TouchableOpacity>
-        </View>
+        </View>*/}
 
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Agendamento')}>
           <Ionicons name="calendar-outline" size={28} color="#fff" />
@@ -92,14 +82,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   headerWrapper: {
-    flex: 0.6, // Diminui a altura do cabeçalho
+    flex: 0.6,
     justifyContent: 'flex-start',
     paddingHorizontal: '5%',
-    paddingVertical: '5%', // Reduz a altura do padding para equilibrar
+    paddingVertical: '5%',
     backgroundColor: '#3D3A72',
-  },
-  containerHeader: {
-    alignItems: 'flex-start', // Corrigido de 'left' para 'flex-start'
   },
   message: {
     paddingTop: 20,
@@ -112,39 +99,17 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   containerHome: {
-    flex: 4, // Aumenta a altura da área do corpo
+    flex: 4,
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'stretch', // Ajuste para "stretch" ao invés de "center"
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingHorizontal: '5%',
     backgroundColor: '#fff',
   },
-  section: {
-    width: '100%',
-    paddingVertical: 10,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 10,
-    color: '#4A4A4A',
-  },
-  headerLink: {
-    color: '#6762BC',
-    fontSize: 14,
-    marginTop: 14,
-  },
   mainCard: {
     backgroundColor: '#3D3A72',
     borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
     padding: 16,
     marginBottom: 16,
     shadowColor: '#000',
@@ -153,23 +118,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  patientImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 16,
-  },
-  cardText: {
-    flex: 1,
-  },
-  patientName: {
+  agendamentoText: {
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
-  },
-  patientDetail: {
-    fontSize: 12,
-    color: '#ddd',
   },
   bottomMenu: {
     flexDirection: 'row',
@@ -177,6 +129,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 10,
+    paddingTop: 20,
+    paddingBottom: 20,
     position: 'absolute',
     bottom: 0,
     left: 0,

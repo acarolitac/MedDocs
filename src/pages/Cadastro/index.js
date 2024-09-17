@@ -117,10 +117,18 @@ export default function Cadastro() {
             />
           </TouchableOpacity>
         </View>
+
         
+        {/* BOTÃO COM FUNÇÕES              
         <TouchableOpacity style={styles.button} onPress={handleCadastro}> 
           <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
+        */}
+        
+        <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Home')}> 
+          <Text style={styles.buttonText}>Cadastrar</Text>
+        </TouchableOpacity>
+
 
         <Animatable.View animation="fadeInRight" delay={500}>
             <TouchableOpacity style={styles.buttonRegister} onPress={ () => navigation.navigate('Login')}>
@@ -164,8 +172,9 @@ const styles = StyleSheet.create({
       paddingEnd: '5%'
     },
     title: {
-      fontSize: 20,
-      marginTop: 28
+      fontSize: 19,
+      marginTop: 28,
+      color: '#4A4A4A',
     },
     input: {
       borderBottomWidth: 1,

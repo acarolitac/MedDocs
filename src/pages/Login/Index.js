@@ -86,8 +86,9 @@ export default function Login() {
             />
           </TouchableOpacity>
         </View>
-        
-        <TouchableOpacity 
+
+        {/* BOTÃO COM FUNÇÕES     
+                <TouchableOpacity 
           style={styles.button} 
           onPress={async () => {
             const success = await handleLogin(); //executa a função handleLogin e aguarda o resultado
@@ -96,6 +97,11 @@ export default function Login() {
             }
           }}
         >
+          <Text style={styles.buttonText}>Entrar</Text>
+        </TouchableOpacity>
+        */}
+
+        <TouchableOpacity style={styles.button} onPress={ () => navigation.navigate('Home')}> 
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
 
@@ -137,8 +143,9 @@ const styles = StyleSheet.create({
     paddingEnd: '5%'
   },
   title: {
-    fontSize: 20,
-    marginTop: 28
+    fontSize: 19,
+    marginTop: 28,
+    color: '#4A4A4A',
   },
   input: {
     borderBottomWidth: 1,
