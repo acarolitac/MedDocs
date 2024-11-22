@@ -4,10 +4,11 @@ import Welcome from '../pages/Welcome/index';
 import Login from '../pages/Login/Index';
 import Cadastro from '../pages/Cadastro/index';
 import Home from '../pages/Home/index';
-import FormProntuario from '@/pages/FormProntuario';
-import Prontuarios from '@/pages/Prontuarios';
-import Agendamento from '@/pages/Agendamentos';
-
+import FormProntuario from '@/pages/FormProntuario/index';
+import Prontuarios from '@/pages/Prontuarios/index';
+import Agendamento from '@/pages/Agendamentos/index';
+import PerfilUsuario from '@/pages/PerfilUsuario/index';
+import RedefinirSenha from '@/pages/RedefinirSenha/index';
 const Stack = createNativeStackNavigator(); //função utilizada no React Navigation, especificamente com o pacote @react-navigation/native-stack, para criar um "stack navigator" nativo, que permite navegar entre diferentes telas em um aplicativo React Native. Um "stack navigator" gerencia uma pilha de telas onde você pode empilhar novas telas sobre as anteriores e, eventualmente, voltar para a tela anterior ao desempilhar a tela do topo.
 
 export default function Routes() {
@@ -54,7 +55,18 @@ export default function Routes() {
         component={Agendamento}
         options={{ headerShown: false}}
       />
+
+      <Stack.Screen
+        name="RedefinirSenha"
+        component={RedefinirSenha}
+        options={{ headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="PerfilUsuario"
+        component={PerfilUsuario}
+        options={{ headerShown: false}}
+      />
     </Stack.Navigator>
-    
   );
 }

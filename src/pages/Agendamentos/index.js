@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { Agenda } from 'react-native-calendars'; // importa o calendário da biblioteca react-native-calendars 
+import { auth } from '@/firebase/firebase.config'; // Importando o Firebase
 
 export default function Agendamento() {
   const navigation = useNavigation();
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // Verifica o status de autenticação do usuário assim que o componente é montado
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      setCurrentUser(user);
+    } else {
+      alert("É necessário efetuar o login para utilizar este recurso!");
+      navigation.navigate('Login');
+    }
+  }, [navigation]); // Adicionando a dependência de navigation para evitar problemas de navegação
 
   //exemplo de dados para o calendário
   const items = {
@@ -67,7 +80,7 @@ export default function Agendamento() {
           <Text style={styles.menuText}>Agendar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('PerfilUsuario')}>
           <Ionicons name="person-outline" size={28} color="#fff" />
           <Text style={styles.menuText}>Perfil</Text>
         </TouchableOpacity>

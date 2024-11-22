@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable'; // Biblioteca de animação
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; // Biblioteca de ícones
+import { auth } from '@/firebase/firebase.config';
 
 export default function Home() {
   const navigation = useNavigation();
+  const currentUser = auth.currentUser;
+
+  if(currentUser != null){
+    //Usuário Logado
+  }else{
+    alert("É necessário efetuar o login para utilizar este recurso!");
+    navigation.navigate('Login');
+  }
 
   return (
     <View style={styles.container}>
@@ -77,7 +86,7 @@ export default function Home() {
           <Text style={styles.menuText}>Agendar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('PerfilUsuario')}>
           <Ionicons name="person-outline" size={28} color="#fff" />
           <Text style={styles.menuText}>Perfil</Text>
         </TouchableOpacity>

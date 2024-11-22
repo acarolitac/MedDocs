@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import * as Animatable from 'react-native-animatable'; // biblioteca de animação
 import { useNavigation } from '@react-navigation/native';
+import { auth } from '@/firebase/firebase.config'; // Importando o Firebase
 
 export default function FormProntuario() {
     const navigation = useNavigation(); // navegar até a tela de Login através do botão "Acessar"
     const [email, setEmail] = useState(''); // controle de estado para o campo de email
+    const currentUser = auth.currentUser;
+
+    if(currentUser != null){
+    //Usuário Logado
+    }else{
+    alert("É necessário efetuar o login para utilizar este recurso!");
+    navigation.navigate('Login');
+    } 
+
 
     return (
         <ScrollView contentContainerStyle={styles.container}>

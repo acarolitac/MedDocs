@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useEffect } from 'react';
 import Routes from '../projetoMEDdocs/src/routes/index';
-import { initializeDatabase } from '../projetoMEDdocs/src/database/db';
+//import { initializeDatabase } from '../projetoMEDdocs/src/database/db';
 
 // Em algum lugar no início do seu aplicativo
 //initializeDatabase();

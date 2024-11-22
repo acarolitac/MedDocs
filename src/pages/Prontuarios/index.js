@@ -4,9 +4,18 @@ import * as Animatable from 'react-native-animatable'; //biblioteca de animaçã
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; //biblioteca de icons
 import { useState } from 'react';
+import { auth } from '@/firebase/firebase.config'; // Importando o Firebase
 
 export default function Prontuarios() {
   const navigation = useNavigation();
+  const currentUser = auth.currentUser;
+
+  if(currentUser != null){
+    //Usuário Logado
+  }else{
+    alert("É necessário efetuar o login para utilizar este recurso!");
+    navigation.navigate('Login');
+  }
 
   return (
     <View style={styles.container}>
@@ -65,7 +74,7 @@ export default function Prontuarios() {
           <Text style={styles.menuText}>Agendar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('PerfilUsuario')}>
           <Ionicons name="person-outline" size={28} color="#fff" />
           <Text style={styles.menuText}>Perfil</Text>
         </TouchableOpacity>
