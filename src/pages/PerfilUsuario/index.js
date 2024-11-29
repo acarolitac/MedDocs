@@ -85,7 +85,7 @@ export default function Perfil() {
           <Text style={styles.menuText}>Agendar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Perfil')}>
+        <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('PerfilUsuario')}>
           <Ionicons name="person-outline" size={28} color="#fff" />
           <Text style={styles.menuText}>Perfil</Text>
         </TouchableOpacity>
