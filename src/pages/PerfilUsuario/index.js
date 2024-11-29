@@ -42,7 +42,7 @@ export default function Perfil() {
       {/* Cabeçalho */}
       <View style={styles.headerWrapper}>
         <Animatable.View animation="fadeInLeft" delay={200} style={styles.containerHeader}>
-          <Text style={styles.message}>Perfil de Usuário</Text>
+          <Text style={styles.message}>Perfil do Usuário</Text>
         </Animatable.View>
       </View>
 

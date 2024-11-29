@@ -1,91 +1,106 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import * as Animatable from 'react-native-animatable'; // Biblioteca de animação
+import { StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Alert } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Biblioteca de ícones
-import { auth } from '@/firebase/firebase.config';
+import { Ionicons } from '@expo/vector-icons';
+import { auth, firestore } from '@/firebase/firebase.config';
+import { collection, getDocs } from 'firebase/firestore';
 
 export default function Home() {
   const navigation = useNavigation();
+  const [agendamentos, setAgendamentos] = useState([]);
   const currentUser = auth.currentUser;
 
-  if(currentUser != null){
-    //Usuário Logado
-  }else{
-    alert("É necessário efetuar o login para utilizar este recurso!");
-    navigation.navigate('Login');
-  }
+  useEffect(() => {
+    if (!currentUser) {
+      Alert.alert('Atenção', 'É necessário efetuar o login para acessar esta página.');
+      navigation.navigate('Login');
+    } else {
+      fetchAgendamentos();
+    }
+  }, [navigation, currentUser]);
+
+  // Buscar agendamentos no Firestore
+  const fetchAgendamentos = async () => {
+    try {
+      const snapshot = await getDocs(collection(firestore, 'agendamentos'));
+      const agendamentosList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setAgendamentos(agendamentosList);
+    } catch (error) {
+      console.error('Erro ao buscar agendamentos:', error);
+      Alert.alert('Erro', 'Não foi possível carregar os agendamentos.');
+    }
+  };
 
   return (
     <View style={styles.container}>
       {/* Cabeçalho */}
       <View style={styles.headerWrapper}>
         <Animatable.View animation="fadeInLeft" delay={200} style={styles.containerHeader}>
-          <Text style={styles.message}>Olá, nomeDeUsuario!</Text>
+          <Text style={styles.message}>Olá, {currentUser?.displayName || 'Usuário'}!</Text>
           <Text style={styles.subtexto}>O que você precisa hoje?</Text>
         </Animatable.View>
       </View>
 
-      {/* Corpo da tela */}
-      <View animation="fadeInLeft" delay={200} style={styles.containerHome}>
-        {/* Seção de próximos atendimentos */}
+      {/* Próximos Atendimentos */}
+      <View style={styles.containerHome}>
         <View style={styles.section}>
           <View style={styles.header}>
-            <Text style={styles.headerText}>Próximos atendimentos</Text>
+            <Text style={styles.headerText}>Próximos Atendimentos</Text>
             <TouchableOpacity onPress={() => navigation.navigate('Agendamento')}>
               <Text style={styles.headerLink}>Ver tudo</Text>
             </TouchableOpacity>
           </View>
-
-          {/* Cartão principal */}
-          <TouchableOpacity style={styles.mainCard} onPress={() => navigation.navigate('Agendamento')}>
-            <Image
-              source={{ uri: 'https://via.placeholder.com/50' }} // Coloque aqui a URL da imagem do paciente
-              style={styles.patientImage}
-            />
-            <View style={styles.cardText}>
-              <Text style={styles.patientName}>NomePaciente</Text>
-              <Text style={styles.patientDetail}>Lorem ipsum</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Seção de prontuários cadastrados */}
-        <View style={styles.section}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Prontuários Cadastrados</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Prontuarios')}>
-              <Text style={styles.headerLink}>Ver tudo</Text>
-            </TouchableOpacity>
-          </View>
+          <FlatList
+            data={agendamentos}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.mainCard}
+                onPress={() => navigation.navigate('Agendamento')}
+              >
+                <Image
+                  source={{ uri: 'https://via.placeholder.com/50' }} // Placeholder, pode ser substituído por imagem real
+                  style={styles.patientImage}
+                />
+                <View style={styles.cardText}>
+                  <Text style={styles.patientName}>{item.name}</Text>
+                  <Text style={styles.patientDetail}>Data: {item.date}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            ListEmptyComponent={<Text style={styles.emptyText}>Nenhum agendamento encontrado.</Text>}
+          />
         </View>
       </View>
 
-      {/* Menu inferior */}
+      {/* Menu Inferior */}
       <View style={styles.bottomMenu}>
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Home')}>
           <Ionicons name="home-outline" size={28} color="#fff" />
           <Text style={styles.menuText}>Home</Text>
         </TouchableOpacity>
-
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Prontuarios')}>
           <Ionicons name="document-text-outline" size={28} color="#fff" />
           <Text style={styles.menuText}>Prontuário</Text>
         </TouchableOpacity>
-
         <View style={styles.centralIconWrapper}>
-          <TouchableOpacity style={styles.centralIcon} onPress={() => navigation.navigate('FormProntuario')}>
+          <TouchableOpacity
+            style={styles.centralIcon}
+            onPress={() => navigation.navigate('FormProntuario')}
+          >
             <View style={styles.circle}>
               <Ionicons name="add" size={36} color="#fff" />
             </View>
           </TouchableOpacity>
         </View>
-
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Agendamento')}>
           <Ionicons name="calendar-outline" size={28} color="#fff" />
           <Text style={styles.menuText}>Agendar</Text>
         </TouchableOpacity>
-
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('PerfilUsuario')}>
           <Ionicons name="person-outline" size={28} color="#fff" />
           <Text style={styles.menuText}>Perfil</Text>
@@ -223,5 +238,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#fff',
     marginTop: 4,
+  },
+  emptyText: {
+    textAlign: 'center',
+    color: '#555',
+    fontSize: 16,
+    marginTop: 20,
   },
 });

@@ -40,7 +40,7 @@ export default function Login() {
       signInWithEmailAndPassword(auth, email, senha)
         .then((userCredential) => {
           const user = userCredential.user;
-          alert('Login efetuado com sucesso!');
+          //alert('Login efetuado com sucesso!');
           console.log(user);
           resolve(true); // Login bem-sucedido
         })
